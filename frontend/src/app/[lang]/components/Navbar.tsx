@@ -67,6 +67,8 @@ export default function Navbar({
   const closeMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  console.log(links)
   return (
     <div className="p-4 dark:bg-black dark:text-gray-100">
       <div className="container flex justify-between h-16 mx-auto px-0 sm:px-6">
