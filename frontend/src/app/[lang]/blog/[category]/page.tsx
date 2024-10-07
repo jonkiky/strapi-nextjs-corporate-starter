@@ -18,9 +18,9 @@ async function fetchPostsByCategory(filter: string) {
                 category: {
                     populate: '*',
                 },
-                authorsBio: {
-                    populate: '*',
-                },
+                authors_bios: {
+                populate: "*",
+              },
             },
         };
         const options = { headers: { Authorization: `Bearer ${token}` } };
