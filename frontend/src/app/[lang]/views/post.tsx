@@ -15,30 +15,26 @@ interface Article {
                 };
             };
         };
-        authorsBio: {
-            data: {
+        authors_bios: {
+            data: Array<{
+                id: number;
                 attributes: {
                     name: string;
-                    avatar: {
-                        data: {
-                            attributes: {
-                                url: string;
-                            };
-                        };
-                    };
+                    email: string;
+                    createdAt: string;
+                    updatedAt: string;
                 };
-            };
-        };
+            }> | null;
+        } | null;
         blocks: any[];
         publishedAt: string;
     };
 }
 
 export default function Post({ data }: { data: Article }) {
-    const { title, description, publishedAt, cover, authorsBio } = data.attributes;
-    const author = authorsBio.data?.attributes;
+    const { title, description, publishedAt, cover, authors_bios } = data.attributes;
+    const authorsBios = authors_bios?.data;
     const imageUrl = getStrapiMedia(cover.data?.attributes.url);
-    const authorImgUrl = getStrapiMedia(authorsBio.data?.attributes.avatar.data.attributes.url);
 
     return (
         <article className="space-y-8 dark:bg-black dark:text-gray-50">
@@ -55,20 +51,40 @@ export default function Post({ data }: { data: Article }) {
                 <h1 className="leading-tight text-5xl font-bold ">{title}</h1>
                 <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center dark:text-gray-400">
                     <div className="flex items-center md:space-x-2">
-                        {authorImgUrl && (
-                            <Image
-                                src={authorImgUrl}
-                                alt="article cover image"
-                                width={400}
-                                height={400}
-                                className="w-14 h-14 border rounded-full dark:bg-gray-500 dark:border-gray-700"
-                            />
+                        {authorsBios && authorsBios.length > 0 ? (
+                          authorsBios.map((authorBio) => {
+                            const { id, attributes } = authorBio;
+                            const { name, email, } = attributes;
+                            const authorImgUrl = getStrapiMedia(attributes.avatar.data.attributes.url);
+                            return (
+                              <span key={id} className="author-info">
+                                {authorImgUrl && (
+                                      <Image
+                                    src={authorImgUrl}
+                                    alt="article cover image"
+                                    width={400}
+                                    height={400}
+                                />
+                                    )}
+                                <p className="text-md dark:text-violet-400">
+                                  {name}
+                                </p>
+                              </span>
+                            );
+                          })
+                        ) : (
+                          <span>No authors available</span>
                         )}
+                    </div>
+                </div>
+                <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center dark:text-gray-400">
+                    <div className="flex items-center md:space-x-2">
                         <p className="text-md dark:text-violet-400">
-                            {author && author.name} • {formatDate(publishedAt)}
+                           {formatDate(publishedAt)}
                         </p>
                     </div>
                 </div>
+                 
             </div>
 
             <div className="dark:text-gray-100">

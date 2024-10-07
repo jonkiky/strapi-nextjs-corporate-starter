@@ -26,20 +26,17 @@ interface Article {
         };
       };
     };
-    authorsBio: {
-      data: {
-        attributes: {
-          name: string;
-          avatar: {
-            data: {
-              attributes: {
-                url: string;
-              };
-            };
-          };
-        };
-      };
-    };
+    authors_bios: {
+            data: Array<{
+                id: number;
+                attributes: {
+                    name: string;
+                    email: string;
+                    createdAt: string;
+                    updatedAt: string;
+                };
+            }> | null;
+        } | null;
   };
 }
 
@@ -50,6 +47,8 @@ export default function PostList({
   data: Article[];
   children?: React.ReactNode;
 }) {
+
+  
   return (
     <section className="container p-6 mx-auto space-y-6 sm:space-y-12">
       <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -59,12 +58,13 @@ export default function PostList({
           );
 
           const category = article.attributes.category.data?.attributes;
-          const authorsBio = article.attributes.authorsBio.data?.attributes;
+          const rawAuthorsBio = article.attributes.authors_bios?.data;
+          const authorsBios = (rawAuthorsBio && rawAuthorsBio.length > 0) ? rawAuthorsBio: null;
+          const firstAuthorsBio = (rawAuthorsBio && rawAuthorsBio.length > 0) ? rawAuthorsBio[0].attributes: null;
 
           const avatarUrl = getStrapiMedia(
-            authorsBio?.avatar.data.attributes.url
+            firstAuthorsBio?.avatar.data.attributes.url
           );
-
           return (
             <Link
               href={`/blog/${category?.slug}/${article.attributes.slug}`}
@@ -99,11 +99,18 @@ export default function PostList({
                   <span className="text-xs dark:text-gray-400">
                     {formatDate(article.attributes.publishedAt)}
                   </span>
-                  {authorsBio && (
-                    <span className="text-xs dark:text-gray-400">
-                      {authorsBio.name}
-                    </span>
-                  )}
+                   <span className="text-xs dark:text-gray-400">
+                  {authorsBios && authorsBios.length > 0 ? (
+                      authorsBios.map((authorBio, index) => (
+                        <span key={authorBio.id}>
+                          {authorBio.attributes.name}
+                          {index < authorsBios.length - 1 && " & "}
+                        </span>
+                      ))
+                    ) : (
+                      <span></span>
+                    )}
+                </span>
                 </div>
                 <p className="py-4">{article.attributes.description}</p>
               </div>

@@ -9,7 +9,9 @@ async function getPostBySlug(slug: string) {
         filters: { slug },
         populate: {
             cover: { fields: ['url'] },
-            authorsBio: { populate: '*' },
+            authors_bios: {
+                    populate: "*",
+            },
             category: { fields: ['name'] },
             blocks: { 
                 populate: {

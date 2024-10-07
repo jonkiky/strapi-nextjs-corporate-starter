@@ -822,9 +822,9 @@ export interface ApiArticleArticle extends Schema.CollectionType {
         'shared.video-embed'
       ]
     >;
-    authorsBio: Attribute.Relation<
+    authors_bios: Attribute.Relation<
       'api::article.article',
-      'manyToOne',
+      'manyToMany',
       'api::author.author'
     >;
     seo: Attribute.Component<'shared.seo'>;
@@ -863,7 +863,7 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
     email: Attribute.String;
     articles: Attribute.Relation<
       'api::author.author',
-      'oneToMany',
+      'manyToMany',
       'api::article.article'
     >;
     createdAt: Attribute.DateTime;

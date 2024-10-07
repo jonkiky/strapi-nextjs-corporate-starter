@@ -50,9 +50,9 @@
         "shared.video-embed"
       ]
     },
-    "authorsBio": {
+    "authors_bios": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::author.author",
       "inversedBy": "articles"
     },
