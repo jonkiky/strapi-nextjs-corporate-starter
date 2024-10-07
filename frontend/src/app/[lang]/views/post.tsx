@@ -64,7 +64,7 @@ export default function Post({ data }: { data: Article }) {
                                     width="80"
                                     height="80"
                                     src={authorImgUrl}
-                                    className="rounded-full h-16 w-16 object-cover absolute -top-8 right-4"
+                                    className="rounded-full h-16 w-16"
                                   />
                                     )}
                                 <p className="text-md dark:text-violet-400">
