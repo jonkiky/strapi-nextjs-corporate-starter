@@ -59,12 +59,13 @@ export default function Post({ data }: { data: Article }) {
                             return (
                               <span key={id} className="author-info">
                                 {authorImgUrl && (
-                                      <Image
+                                 <Image
+                                    alt="avatar"
+                                    width="80"
+                                    height="80"
                                     src={authorImgUrl}
-                                    alt="article cover image"
-                                    width={400}
-                                    height={400}
-                                />
+                                    className="rounded-full h-16 w-16 object-cover absolute -top-8 right-4"
+                                  />
                                     )}
                                 <p className="text-md dark:text-violet-400">
                                   {name}
